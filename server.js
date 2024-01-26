@@ -1,8 +1,9 @@
-const express = require('express');
-const bodyParser = require('body-parser'); 
+const express = require('express'); 
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex')
+
+const port = process.env.PORT || 3000;
 
 const db = knex({
   client: 'pg',
@@ -90,6 +91,7 @@ app.put('/image', (req, res) => {
   .catch(err => res.status(400).json('unable to get entries'))
 })
 
-app.listen(3000, ()=> {
-  console.log('app is running on port 3000');
-})
+const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+server.keepAliveTimeout = 120 * 1000;
+server.headersTimeout = 120 * 1000;
